@@ -10,7 +10,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // database connection
-const dbURI = 'mongodb+srv://nn-admin:nnnodecc123@conteusz.maotu.mongodb.net/nn-node?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://nn-admin:nnnodecc123@conteusz.maotu.mongodb.net/nn-node-auth';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
   .then((result) => app.listen(3000))
   .catch((err) => console.log(err));
