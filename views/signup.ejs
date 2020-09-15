@@ -3,21 +3,47 @@
 <form action="/signup">
     <h2>Sign up</h2>
     <label for="email">Email</label>
-    <input type="text" name="email" required />
+    <input type="text" name="email" />
     <div class="email error"></div>
     <label for="password">Password</label>
-    <input type="password" name="password" required />
+    <input type="password" name="password" />
     <div class="password error"></div>
     <button>Sign up</button>
 </form>
 
 <script>
     const formEl = document.querySelector('form');
+    const emailErrorEl = document.querySelector('.email.error');
+    const passwordErrorEl = document.querySelector('.password.error');
 
-    formEl.addEventListener('submit', e => {
+    formEl.addEventListener('submit', async e => {
         e.preventDefault();
+
+        emailErrorEl.textContent = '';
+        passwordErrorEl.textContent = '';
+
         const email = formEl.email.value;
         const password = formEl.password.value;
+
+        try {
+            const res = await fetch('/signup', {
+                method: 'POST',
+                body: JSON.stringify({ email, password }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const { errors, user } = await res.json();
+            if (errors) {
+                const { email, password } = errors;
+                emailErrorEl.textContent = email;
+                passwordErrorEl.textContent = password;
+            }
+            if (user) {
+                location.assign('/');
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
     })
 </script>
 
